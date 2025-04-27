@@ -103,19 +103,44 @@ export class ExpensesService {
   async update(updateExpenseInput: UpdateExpenseInput): Promise<Expense> {
     const { id, ...updateData } = updateExpenseInput;
 
-    const expense = await this.findOne(id);
+    // First check if the expense exists
+    const expense = await this.expenseModel.findByPk(id);
 
-    // Apply updates
-    await expense.update(updateData);
+    if (!expense) {
+      throw new NotFoundException(`Expense with ID ${id} not found`);
+    }
 
-    return expense;
+    // Update the expense using the model's update method
+    await this.expenseModel.update(updateData, {
+      where: { id }
+    });
+
+    // Return the updated expense
+    const updatedExpense = await this.expenseModel.findByPk(id, { raw: true });
+
+    // This check is needed to satisfy TypeScript
+    if (!updatedExpense) {
+      throw new Error(`Failed to retrieve updated expense with ID ${id}`);
+    }
+
+    return updatedExpense;
   }
 
   // Delete an expense
   async remove(id: string): Promise<boolean> {
-    const expense = await this.findOne(id);
-    await expense.destroy();
-    return true;
+    // First check if the expense exists
+    const expense = await this.expenseModel.findByPk(id);
+
+    if (!expense) {
+      throw new NotFoundException(`Expense with ID ${id} not found`);
+    }
+
+    // Delete the expense using the model's destroy method
+    const deleted = await this.expenseModel.destroy({
+      where: { id }
+    });
+
+    return deleted > 0;
   }
 
   // Get expense statistics
