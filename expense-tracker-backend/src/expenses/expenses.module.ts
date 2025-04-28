@@ -6,12 +6,11 @@ import  Expense  from './models/expense.model';
 
 @Module({
   imports: [
-    // Register the Expense model with Sequelize
     SequelizeModule.forFeature([Expense]),
   ],
   providers: [
-    ExpensesResolver, // GraphQL resolver
-    ExpensesService,  // Service layer
+    ExpensesResolver, 
+    ExpensesService,
   ],
 })
 export class ExpensesModule {}

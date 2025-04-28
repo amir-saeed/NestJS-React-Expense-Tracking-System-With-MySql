@@ -4,9 +4,7 @@ import Expense from './models/expense.model';
 import { CreateExpenseInput } from './dto/create-expense.input';
 import { UpdateExpenseInput } from './dto/update-expense.input';
 import { ExpenseFilterInput } from './dto/expense-filter.input';
-import { UseGuards } from '@nestjs/common';
 
-// Define statistics response type for GraphQL
 @ObjectType()
 class CategoryBreakdown {
   @Field()

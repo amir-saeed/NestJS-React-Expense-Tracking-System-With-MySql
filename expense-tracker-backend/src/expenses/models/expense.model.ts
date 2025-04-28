@@ -1,12 +1,12 @@
 import { Table, Column, Model, DataType, CreatedAt } from 'sequelize-typescript';
 import { Field, ObjectType, ID, Float } from '@nestjs/graphql';
 
-@ObjectType() 
+@ObjectType()
 @Table({
     tableName: 'expenses',
     timestamps: true,
     underscored: false,
-}) // Sequelize model
+})
 export default class Expense extends Model {
     @Field(() => ID)
     @Column({
@@ -16,8 +16,7 @@ export default class Expense extends Model {
     })
     declare id: string;
 
-    // In expense.model.ts
-    @Field({ nullable: true }) // Change this line to allow null
+    @Field({ nullable: true })
     @Column({
         type: DataType.STRING,
         allowNull: false,
@@ -25,7 +24,7 @@ export default class Expense extends Model {
     })
     title: string;
 
-    @Field(() => Float, { nullable: true }) // Allow null in GraphQL
+    @Field(() => Float, { nullable: true })
     @Column({
         type: DataType.DECIMAL(10, 2),
         allowNull: true,

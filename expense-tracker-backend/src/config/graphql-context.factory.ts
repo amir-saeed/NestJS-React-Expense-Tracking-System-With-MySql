@@ -11,10 +11,8 @@ export function createGqlContext({ req, res }: { req: Request; res: Response }):
   const logger = new Logger('GraphQLContext');
   const startTime = Date.now();
   
-  // Log incoming GraphQL requests
   logger.log(`GraphQL Request: ${req.body?.operationName || 'Unnamed Operation'}`);
   
-  // Add response listener to log execution time
   res.on('finish', () => {
     const executionTime = Date.now() - startTime;
     logger.log(
@@ -27,14 +25,12 @@ export function createGqlContext({ req, res }: { req: Request; res: Response }):
   return { req, res, startTime };
 }
 
-// Formatters for GraphQL errors
 export const formatError = (error: any) => {
   const logger = new Logger('GraphQLError');
   
   // Log the error
   logger.error(`GraphQL Error: ${error.message}`, error.stack);
   
-  // Remove sensitive information in production
   if (process.env.NODE_ENV === 'production') {
     return {
       message: error.message,
@@ -43,7 +39,6 @@ export const formatError = (error: any) => {
       },
     };
   }
-  
-  // Return detailed error in development
+
   return error;
 };

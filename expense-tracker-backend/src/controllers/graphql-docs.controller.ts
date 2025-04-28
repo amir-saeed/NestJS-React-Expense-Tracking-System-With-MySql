@@ -1,7 +1,6 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 
-// Sample GraphQL query schema for documentation
 class GraphQLQuery {
   query: string;
   variables?: Record<string, any>;
@@ -12,8 +11,8 @@ class GraphQLQuery {
 export class GraphQLDocsController {
   @Post('/query')
   @ApiOperation({
-    summary: 'Execute GraphQL Query',
-    description: 'This is for documentation only. The actual GraphQL endpoint is at /graphql'
+    summary: 'Run GraphQL Query',
+    description: 'graphql'
   })
   @ApiBody({
     description: 'GraphQL Query',

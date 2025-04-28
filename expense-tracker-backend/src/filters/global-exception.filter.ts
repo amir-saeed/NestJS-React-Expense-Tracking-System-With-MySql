@@ -17,24 +17,19 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
 
-    // Handle GraphQL context
-
     if (host.getType<string>() === 'graphql') {
       const gqlHost = GqlArgumentsHost.create(host);
       const info = gqlHost.getInfo();
 
-      // Log the error with context
       this.logger.error(
         `GraphQL Error in ${info.parentType}.${info.fieldName}: ${exception.message}`,
         exception.stack,
       );
 
-      // GraphQL errors are handled differently
       if (exception instanceof GraphQLError) {
         throw exception;
       }
 
-      // Format other errors as GraphQL errors
       const status =
         exception instanceof HttpException
           ? exception.getStatus()

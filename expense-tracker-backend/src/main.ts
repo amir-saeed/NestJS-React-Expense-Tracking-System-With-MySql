@@ -6,19 +6,18 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS for frontend requests
   app.enableCors({
-    origin: 'http://localhost:4000',
+    origin: ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
 
-  // Enable validation pipes for DTOs
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
     whitelist: true,
     forbidNonWhitelisted: true,
   }));
-  
+
   const config = new DocumentBuilder()
     .setTitle('Expense Tracker API')
     .setDescription('API documentation for Expense Tracker app')
@@ -30,8 +29,8 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  
-  
+
+
 
   await app.listen(process.env.PORT ?? 4000);
 }

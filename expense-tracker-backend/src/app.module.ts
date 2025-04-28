@@ -10,7 +10,6 @@ import { createGqlContext, formatError } from './config/graphql-context.factory'
 import { APP_FILTER } from '@nestjs/core';
 import { GlobalExceptionFilter } from './filters/global-exception.filter';
 import { GraphQLDocsModule } from './graphql-docs.module';
-import { DatabaseMigrationService } from './services/database-migration.service';
 import { DatabaseMigrationModule } from './services/database-migration.module';
 
 @Module({
@@ -21,12 +20,11 @@ import { DatabaseMigrationModule } from './services/database-migration.module';
     }),
     SequelizeModule.forRoot(sequelizeConfig),
 
-    // Configure GraphQL with automatic schema generation
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
-      playground: true, // Enable GraphQL playground for testing
+      playground: true,
       context: createGqlContext,
       formatError,
       installSubscriptionHandlers: true,
@@ -37,7 +35,6 @@ import { DatabaseMigrationModule } from './services/database-migration.module';
     DatabaseMigrationModule
   ],
   providers: [
-    // Global exception filter
     {
       provide: APP_FILTER,
       useClass: GlobalExceptionFilter,

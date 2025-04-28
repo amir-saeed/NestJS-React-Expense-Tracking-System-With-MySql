@@ -10,6 +10,6 @@ export const sequelizeConfig: SequelizeModuleOptions = {
   database: process.env.DB_NAME || 'expense_tracker',
   models: [join(__dirname, '..', '**', '*.model.{ts,js}')],
   autoLoadModels: true,
-  synchronize: true, // Auto-create database schema (don't use in production)
-  logging: true, // SQL logs
+  synchronize: true,
+  logging: true, 
 };
